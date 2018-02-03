@@ -1,7 +1,7 @@
 const knex = require('knex')({
   client: 'pg',
   connection: {
-    user: 'root',
+    user: process.env.DB_USER,
     database: 'bbadger',
     charset: 'utf8',
   }

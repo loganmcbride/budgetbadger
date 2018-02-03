@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import LoansContainer from '../containers/LoansContainer.jsx';
+import LoansContainer from '../../containers/LoansContainer.jsx';
+import AddLoanForm from './AddLoanForm.jsx';
 import { Hero, Box, Heading, Image, Footer, Title, Paragraph, Anchor, Menu, Section, Headline, Legend, NumberInput, Columns, Value, CurrencyIcon, LinkUpIcon, Split, Layer, Form, Header, FormFields, EditIcon, Button, FormField, TextInput, DateTime } from 'grommet';
 import Chart, { Axis, Grid, Area, Bar, Base, Layers, Line, Marker, MarkerLabel, HotSpots } from 'grommet/components/chart/Chart';
 import { amortizationSchedule } from 'amortization';
@@ -177,50 +178,8 @@ class Loans extends React.Component {
                 href='#' 
                 align='right'/>
                 </Box>
-                { this.state.modalToggle &&
-                  <Layer closer={true} overlayClose={false} onClose={this.handleModal}>
-                    <Form style={{padding:'10%'}}>
-                      <Header>
-                        <Heading>
-                          Add New Loans
-                        </Heading>
-                      </Header>
-                      <FormFields>
-                        <FormField label='Loan Name'>
-                          <TextInput />
-                        </FormField>
-                        <p />
-                        <FormField label='Prinicipal Amount ($)'>
-                          <TextInput />
-                        </FormField>
-                        <p />
-                        <FormField label='Interest Rate (%)'>
-                          <TextInput />
-                        </FormField>
-                        <p />
-                      <FormField label='Inception Date'>
-                        <DateTime id='id'
-                          name='inception'
-                          format='M/YYYY'
-                          step={5}
-                          value='5/2015' />
-                      </FormField>
-                      <FormField label='End Date'>
-                        <DateTime id='id'
-                          name='end'
-                          format='M/YYYY'
-                          step={5}
-                          value='5/2015' />
-                      </FormField>
-                      </FormFields>
-                      <Footer pad={{"vertical": "medium"}}>
-                        <Button label='Submit'
-                          type='submit'
-                          primary={true}
-                          onClick={this.handleModal} />
-                      </Footer>
-                    </Form>
-                  </Layer>
+                { this.state.modalToggle && 
+                  <AddLoanForm handleModal={this.handleModal}/>
                 }
             </Box>
             <p />
