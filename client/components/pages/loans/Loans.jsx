@@ -30,7 +30,8 @@ class Loans extends React.Component {
       totalInterestPaid: 0,
       totalPayment: 0,
       name: '',
-      modalToggle: false
+      modalToggle: false,
+      id: 1
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleAmort = this.handleAmort.bind(this);
@@ -104,8 +105,7 @@ class Loans extends React.Component {
     this.handleAmort();
   };
 
-  handleModal(e){
-    e.preventDefault();
+  handleModal(){
     this.setState({
       modalToggle: !this.state.modalToggle
     });
@@ -179,7 +179,7 @@ class Loans extends React.Component {
                 align='right'/>
                 </Box>
                 { this.state.modalToggle && 
-                  <AddLoanForm handleModal={this.handleModal}/>
+                  <AddLoanForm handleModal={this.handleModal} id={this.state.id}/>
                 }
             </Box>
             <p />

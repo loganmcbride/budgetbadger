@@ -111,6 +111,27 @@ const DELETE_BILL = gql`
     deleteBill(id: $id)
   }`;
 
+
+const ADD_LOAN = gql`
+  mutation ADD_LOAN($name: String!, $amount: Float!, $interest_rate: Float!, $inception_date: String!, $end_date: String!, $user_id: Int!) {
+    createLoan(name: $name, amount: $amount, interest_rate: $interest_rate, inception_date: $inception_date, end_date: $end_date, user_id: $user_id) {
+      id
+    }
+  }`;
+
+const LOANS_QUERY = gql`
+  query LOANS_QUERY($user_id: Int!){
+    getLoans(user_id: $user_id) {
+      id
+      name
+      amount
+      interest_rate
+      inception_date
+      end_date
+    }
+  }`;
+
+
 export {
   TRANS_ACC_QUERY,
   UPDATE_TRANSACTIONS,
@@ -120,4 +141,6 @@ export {
   BILLS_QUERY,
   UPDATE_BILL,
   DELETE_BILL,
+  ADD_LOAN,
+  LOANS_QUERY,
 };
