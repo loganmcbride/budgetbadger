@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import LoansContainer from '../../containers/LoansContainer.jsx';
 import AddLoanForm from './AddLoanForm.jsx';
-import { Hero, Box, Heading, Image, Footer, Title, Paragraph, Anchor, Menu, Section, Headline, Legend, NumberInput, Columns, Value, CurrencyIcon, LinkUpIcon, Split, Layer, Form, Header, FormFields, EditIcon, Button, FormField, TextInput, DateTime } from 'grommet';
+import { Hero, Box, Heading, Image, Footer, Title, Paragraph, Anchor, Menu, Section, Headline, Legend, NumberInput, Columns, Value, CurrencyIcon, LinkUpIcon, Split, Layer, Form, Header, FormFields, EditIcon, Button, FormField, TextInput, DateTime, AddIcon } from 'grommet';
 import Chart, { Axis, Grid, Area, Bar, Base, Layers, Line, Marker, MarkerLabel, HotSpots } from 'grommet/components/chart/Chart';
 import { amortizationSchedule } from 'amortization';
+import LoanChart from './ChartLoans.jsx';
 
-// console.log(amortizationSchedule(100000, 20, 8.5))
 
 const precisionRound = (number, precision) => {
   var factor = Math.pow(10, precision);
@@ -83,7 +83,6 @@ class Loans extends React.Component {
 
   handleLoan(e){
     e.preventDefault();
-    // console.log(this.props.loans);
     var currLoan = {};
     this.props.loans.forEach((loan) => {
       if(loan.id === parseInt(e.target.name)) {
@@ -173,42 +172,22 @@ class Loans extends React.Component {
                 wrap={true}
                 pad='none'
                 margin='small'>
-              <Button icon={<EditIcon />}
+              <Button icon={<AddIcon />}
                 onClick={this.handleModal}
                 href='#' 
                 align='right'/>
                 </Box>
                 { this.state.modalToggle && 
-                  <AddLoanForm handleModal={this.handleModal} id={this.state.id}/>
+                  <AddLoanForm handleModal={this.handleModal} 
+                    id={this.state.id}/>
                 }
             </Box>
             <p />
-            <Chart style={{fontSize: "20px"}} full={true}>
-              <Axis count={5}
-                labels={[{"index": 2, "label": "$" + this.state.principal/2}, {"index": 4, "label": "$" + this.state.principal}]}
-                vertical={true} />
-              <Chart vertical={true} full={true}>
-                <Base height='small'
-                  width='large' />
-                <Layers>
-                  <Grid rows={10}
-                    columns={3} />
-                  <Area values={this.state.chartOutstanding}
-                    colorIndex='graph-1'
-                    points={true}
-                    activeIndex={-1} 
-                    max={this.state.principal} />
-                  <Line values={this.state.chartPrincipal}
-                    colorIndex='accent-1'
-                    points={true}
-                    activeIndex={-1} 
-                    max={this.state.principal}/>
-                </Layers>
-                <Axis count={3}
-                  labels={[{"index": 0, "label": this.state.inception}, {"index": 1, "label": Math.floor(this.state.inception + this.state.term/2)}, {"index": 2, "label": this.state.inception + this.state.term}]} />
-                <Legend style={{fontSize: "20px"}} series={[{"label": "Total Paid", "colorIndex": "graph-1"}, {"label": "Balance Outstanding", "colorIndex": "accent-1"}]} />
-              </Chart>
-            </Chart>
+            <LoanChart principal={this.state.principal} 
+              chartOutstanding={this.state.chartOutstanding} 
+              chartPrincipal={this.state.chartPrincipal} 
+              inception={this.state.inception} 
+              term={this.state.term} />
           </Headline>
         </Section>
         <Split fixed={false}>

@@ -58,7 +58,7 @@ class AddLoanForm extends React.Component {
       .catch(error => {
         console.log('there was an error sending the mutation', error);
       });
-  }
+  };
 
 
   render(){
@@ -77,7 +77,7 @@ class AddLoanForm extends React.Component {
             onDOMChange={this.handleChange}/>
           </FormField>
           <p />
-          <FormField label='Prinicipal Amount ($)'>
+          <FormField label='Remaining Balance ($)'>
             <TextInput 
             name='principal'
             onDOMChange={this.handleChange}/>
