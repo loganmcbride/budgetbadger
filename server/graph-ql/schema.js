@@ -138,6 +138,7 @@ module.exports = `
     createSchool(name: String!): School!
     createLoan(name: String!, amount: Float!, interest_rate: Float!, inception_date: String!, end_date: String!, user_id: Int!): Loan
     createLoanPayment(amount: Int!, date: String!, loan_id: Int!, user_id: Int!): Loan_Payment
+    deleteLoan(id: Int!): Int!
     deleteUser(email: String!): Int!
     loginUser(email: String!, password: String!): [String!]
     addBank(id: String!, access_token: String!, user_id: Int!, last_updated: String): Bank

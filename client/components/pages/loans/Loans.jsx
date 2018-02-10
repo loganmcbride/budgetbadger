@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import LoansContainer from '../../containers/LoansContainer.jsx';
 import AddLoanForm from './AddLoanForm.jsx';
-import { Hero, Box, Heading, Image, Footer, Title, Paragraph, Anchor, Menu, Section, Headline, Legend, NumberInput, Columns, Value, CurrencyIcon, LinkUpIcon, Split, Layer, Form, Header, FormFields, EditIcon, Button, FormField, TextInput, DateTime, AddIcon } from 'grommet';
+import { Hero, Box, Heading, Image, Footer, Title, Paragraph, Anchor, Menu, Section, Headline, Legend, NumberInput, Columns, Value, CurrencyIcon, LinkUpIcon, LineChartIcon ,Split, Layer, Form, Header, FormFields, EditIcon, Button, FormField, TextInput, DateTime, AddIcon } from 'grommet';
 import Chart, { Axis, Grid, Area, Bar, Base, Layers, Line, Marker, MarkerLabel, HotSpots } from 'grommet/components/chart/Chart';
 import { amortizationSchedule } from 'amortization';
 import LoanChart from './ChartLoans.jsx';
+import AdvancedChart from './AdvancedChart.jsx';
+import moment from 'moment';
+import twix from 'twix';
 
+// console.log(amortizationSchedule(50000, 5, 10))
 
 const precisionRound = (number, precision) => {
   var factor = Math.pow(10, precision);
@@ -22,6 +26,7 @@ class Loans extends React.Component {
     this.state = {
       chartPrincipal: [],
       chartOutstanding: [],
+      chartDates: [],
       principal: 45000,
       payLevel: 850,
       interestRate: 8.5,
@@ -31,14 +36,21 @@ class Loans extends React.Component {
       totalPayment: 0,
       name: '',
       modalToggle: false,
-      id: 1
+      id: 1,
+      chartToggle: false,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleAmort = this.handleAmort.bind(this);
     this.handleLoan = this.handleLoan.bind(this);
     this.handleModal = this.handleModal.bind(this);
+    this.toggleChart = this.toggleChart.bind(this);
   };
 
+  toggleChart(){
+    this.setState({
+      chartToggle: !this.state.chartToggle
+    })
+  };
 
   handleAmort(){
     var amort = amortizationSchedule(this.state.principal, this.state.term, this.state.interestRate);
@@ -46,12 +58,14 @@ class Loans extends React.Component {
     var payments = [];
     var outstanding = [];
     var interest = [];
+    var dates =[];
 
     amort.forEach((payment) => {
       principal.push(payment.principalBalanceRounded);
       payments.push(payment.payment);
       outstanding.push(this.state.principal - payment.principalBalanceRounded);
       interest.push(payment.interestPayment);
+      dates.push()
     })
 
     var totalinterest = interest.reduce((a, b) => { return a + b });
@@ -89,12 +103,15 @@ class Loans extends React.Component {
         currLoan = loan;
       }
     });
+    currLoan.datesArr = moment(currLoan.inception_date).twix(currLoan.end_date, {allDay: true}).toArray('months').map((date) => { return date.format('L') });
+    
     this.setState({
       name: currLoan.name,
       principal: currLoan.amount,
       interestRate: currLoan.interest_rate,
       term: (new Date(currLoan.end_date).getFullYear() - new Date(currLoan.inception_date).getFullYear()),
-      inception: new Date(currLoan.inception_date).getFullYear()
+      inception: new Date(currLoan.inception_date).getFullYear(),
+      chartDates: currLoan.datesArr,
     }, () => {
       this.handleAmort();
     });
@@ -176,6 +193,10 @@ class Loans extends React.Component {
                 onClick={this.handleModal}
                 href='#' 
                 align='right'/>
+              <Button icon={<LineChartIcon />}
+                onClick={this.toggleChart}
+                href='#' 
+                align='right'/>
                 </Box>
                 { this.state.modalToggle && 
                   <AddLoanForm handleModal={this.handleModal} 
@@ -183,11 +204,21 @@ class Loans extends React.Component {
                 }
             </Box>
             <p />
-            <LoanChart principal={this.state.principal} 
+            { this.state.chartToggle ? (
+              <AdvancedChart principal={this.state.principal} 
               chartOutstanding={this.state.chartOutstanding} 
               chartPrincipal={this.state.chartPrincipal} 
+              chartDates={this.state.chartDates}
               inception={this.state.inception} 
-              term={this.state.term} />
+              term={this.state.term}
+              name={this.state.name}/>
+            ) : (
+              <LoanChart principal={this.state.principal} 
+                chartOutstanding={this.state.chartOutstanding} 
+                chartPrincipal={this.state.chartPrincipal} 
+                inception={this.state.inception} 
+                term={this.state.term} />
+            )}
           </Headline>
         </Section>
         <Split fixed={false}>

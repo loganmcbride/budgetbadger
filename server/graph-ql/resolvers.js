@@ -319,6 +319,7 @@ module.exports = {
     deleteBillCategory: (parent, args, { knex }) => knex('bill_categories').where(args).del(),
     createLoan: async (parent, args, { models }) => await new models.Loan(args).save(null, {method:'insert'}),
     createLoanPayment: async (parent, args, { models }) => await new models.Loan_Payment(args).save(null, {method: 'insert'}),
+    deleteLoan: (parent, args, { knex }) => knex('loans').where(args).del(),
   }
 }
 

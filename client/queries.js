@@ -72,6 +72,14 @@ const DASH_QUERY = gql`
       id
       name
     }
+    getLoans(user_id: $user_id) {
+      id
+      name
+      amount
+      interest_rate
+      inception_date
+      end_date
+    }
   }`;
 
 const BILLS_QUERY = gql`
@@ -131,6 +139,11 @@ const LOANS_QUERY = gql`
     }
   }`;
 
+const DELETE_LOAN = gql`
+  mutation deleteLoan($id: Int!) {
+    deleteLoan(id: $id)
+  }`;
+
 
 export {
   TRANS_ACC_QUERY,
@@ -143,4 +156,5 @@ export {
   DELETE_BILL,
   ADD_LOAN,
   LOANS_QUERY,
+  DELETE_LOAN,
 };
